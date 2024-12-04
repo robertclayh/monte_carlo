@@ -1,6 +1,11 @@
 import pandas as pd
 
 class Game:
+    """
+    Represents a game consisting of rolling one or more similar dice (Die objects) one or more times.
+    
+    Each die in a given game has the same number of sides and associated faces, but each die object may have its own weights.
+    """
     def __init__(self, dice: list):
         """
         Initializes the Game object with a list of Die objects.
@@ -37,29 +42,25 @@ class Game:
         self._play_results = pd.DataFrame(results)
         self._play_results.index.name = 'Roll'
 
-    def show(self, form: str = 'wide'):
+    def show(self, form='wide'):
         """
-        Displays the results of the most recent play.
+        Shows the results of the most recent play.
         
         Parameters:
-        form (str): Specifies the format of the results ('wide' or 'narrow'). Defaults to 'wide'.
+        form (str): The format of the returned data frame, either 'wide' or 'narrow'. Defaults to 'wide'.
         
         Returns:
         pd.DataFrame: A copy of the play results in the specified format.
         
         Raises:
-        ValueError: If an invalid format is specified.
+        ValueError: If the form parameter is not 'wide' or 'narrow'.
         """
         if self._play_results is None:
-            raise ValueError("No game has been played yet. Call the play() method first.")
+            raise ValueError("No play results to show. Please play the game first.")
         
         if form == 'wide':
             return self._play_results.copy()
         elif form == 'narrow':
-            return self._play_results.melt(
-                var_name='Die', 
-                value_name='Outcome', 
-                ignore_index=False
-            ).reset_index().set_index(['Roll', 'Die'])
+            return self._play_results.stack().to_frame('Outcome').rename_axis(index=['Roll', 'Die'])
         else:
-            raise ValueError("Invalid form. Choose either 'wide' or 'narrow'.")
+            raise ValueError("Invalid form. Please choose 'wide' or 'narrow'.")

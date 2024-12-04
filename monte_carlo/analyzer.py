@@ -2,6 +2,9 @@ import pandas as pd
 from itertools import combinations_with_replacement, permutations
 
 class Analyzer:
+    """
+    An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
+    """
     def __init__(self, game):
         """
         Initializes the Analyzer object with a Game object.
@@ -38,26 +41,30 @@ class Analyzer:
 
     def combo_count(self):
         """
-        Computes the distinct combinations of faces rolled and their counts.
+        Computes the distinct combinations of faces rolled, along with their counts.
+        
+        Combinations are order-independent and may contain repetitions.
         
         Returns:
-        pd.DataFrame: A DataFrame with a MultiIndex of combinations and a column for counts.
+        pd.DataFrame: A DataFrame with a MultiIndex of distinct combinations and a column for the associated counts.
         """
-        sorted_rolls = self.results.apply(sorted, axis=1)
-        combinations = sorted_rolls.apply(tuple)
-        combo_counts = combinations.value_counts().reset_index()
+        combos = self.results.apply(lambda row: tuple(sorted(row)), axis=1)
+        combo_counts = combos.value_counts().reset_index()
         combo_counts.columns = ['Combination', 'Count']
-        return combo_counts.set_index('Combination')
+        combo_counts.set_index('Combination', inplace=True)
+        return combo_counts
 
     def permutation_count(self):
         """
-        Computes the distinct permutations of faces rolled and their counts.
+        Computes the distinct permutations of faces rolled, along with their counts.
+        
+        Permutations are order-dependent and may contain repetitions.
         
         Returns:
-        pd.DataFrame: A DataFrame with a MultiIndex of permutations and a column for counts.
+        pd.DataFrame: A DataFrame with a MultiIndex of distinct permutations and a column for the associated counts.
         """
-        permuted_rolls = self.results.apply(lambda x: list(permutations(x)), axis=1)
-        flat_permutations = [tuple(p) for sublist in permuted_rolls for p in sublist]
-        perm_counts = pd.Series(flat_permutations).value_counts().reset_index()
+        perms = self.results.apply(lambda row: tuple(row), axis=1)
+        perm_counts = perms.value_counts().reset_index()
         perm_counts.columns = ['Permutation', 'Count']
-        return perm_counts.set_index('Permutation')
+        perm_counts.set_index('Permutation', inplace=True)
+        return perm_counts
