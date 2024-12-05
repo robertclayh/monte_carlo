@@ -72,9 +72,7 @@ class Die:
     
 class Game:
     """
-    Represents a game consisting of rolling one or more similar dice (Die objects) one or more times.
-    
-    Each die in a given game has the same number of sides and associated faces, but each die object may have its own weights.
+    Represents a game consisting of rolling one or more dice (Die objects) one or more times.
     """
     def __init__(self, dice: list):
         """
@@ -137,7 +135,7 @@ class Game:
         
 class Analyzer:
     """
-    An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
+    An Analyzer object takes the results of a single game (Game object) and computes various descriptive statistical properties about it.
     """
     def __init__(self, game):
         """
