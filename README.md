@@ -15,14 +15,19 @@ This project simulates rolling dice, playing games with those dice, and analyzin
 import numpy as np
 from monte_carlo import Die
 
-faces = np.array([1, 2, 3, 4, 5, 6])
+# Create a die with faces C, L, A, Y
+faces = np.array(['C', 'L', 'A', 'Y'])
 die = Die(faces)
-die.change_weight(1, 2.0)
+
+# Weight the 'C' face
+die.change_weight('C', 2)
+
+# Roll the die 10 times
 print(die.roll(10))
 ```
 
 ```plaintxt
-[5, 4, 1, 1, 5, 1, 6, 1, 5, 3]
+['A', 'Y', 'L', 'L', 'Y', 'C', 'C', 'A', 'C', 'C']
 ```
 
 ### Playing a Game
@@ -30,25 +35,32 @@ print(die.roll(10))
 ```python
 from monte_carlo import Game
 
-dice = [Die(faces), Die(faces)]
+# Create a list of four dice objects
+dice = [die, die, die, die]
+
+# Initialize a game with the list of dice
 game = Game(dice)
+
+# Play the game by rolling the dice 10 times
 game.play(10)
+
+# Display the results of the game in 'wide' format
 print(game.show('wide'))
 ```
 
 ```plaintxt
-      0  1
-Roll      
-0     4  5
-1     5  2
-2     4  4
-3     4  3
-4     1  2
-5     6  2
-6     4  6
-7     1  1
-8     1  3
-9     2  3
+      0  1  2  3
+Roll            
+0     A  Y  C  Y
+1     C  A  C  C
+2     C  C  C  A
+3     C  C  A  Y
+4     Y  Y  L  C
+5     C  A  A  C
+6     Y  C  C  C
+7     A  Y  L  C
+8     C  A  A  Y
+9     C  Y  C  A
 ```
 
 ### Analyzing a Game
@@ -56,7 +68,9 @@ Roll
 ```python
 from monte_carlo import Analyzer
 
+# Initialize the analysis of a game
 analyzer = Analyzer(game)
+
 print(f"Jackpots rolled: {analyzer.jackpot()}")
 print(analyzer.face_counts_per_roll())
 print(analyzer.combo_count())
@@ -64,43 +78,41 @@ print(analyzer.permutation_count())
 ```
 
 ```plaintxt
-Jackpots rolled: 2
-      1  2  3  4  5  6
-Roll                  
-0     0  0  0  1  1  0
-1     0  1  0  0  1  0
-2     0  0  0  2  0  0
-3     0  0  1  1  0  0
-4     1  1  0  0  0  0
-5     0  1  0  0  0  1
-6     0  0  0  1  0  1
-7     2  0  0  0  0  0
-8     1  0  1  0  0  0
-9     0  1  1  0  0  0
-             Count
-Combination       
-(4, 5)           1
-(2, 5)           1
-(4, 4)           1
-(3, 4)           1
-(1, 2)           1
-(2, 6)           1
-(4, 6)           1
-(1, 1)           1
-(1, 3)           1
-(2, 3)           1
-             Count
-Permutation       
-(4, 5)           1
-(5, 2)           1
-(4, 4)           1
-(4, 3)           1
-(1, 2)           1
-(6, 2)           1
-(4, 6)           1
-(1, 1)           1
-(1, 3)           1
-(2, 3)           1
+Jackpots rolled: 0
+      A  C  L  Y
+Roll            
+0     1  1  0  2
+1     1  3  0  0
+2     1  3  0  0
+3     1  2  0  1
+4     0  1  1  2
+5     2  2  0  0
+6     0  3  0  1
+7     1  1  1  1
+8     2  1  0  1
+9     1  2  0  1
+              Count
+Combination        
+(A, C, C, C)      2
+(A, C, C, Y)      2
+(A, C, Y, Y)      1
+(C, L, Y, Y)      1
+(A, A, C, C)      1
+(C, C, C, Y)      1
+(A, C, L, Y)      1
+(A, A, C, Y)      1
+              Count
+Permutation        
+(A, Y, C, Y)      1
+(C, A, C, C)      1
+(C, C, C, A)      1
+(C, C, A, Y)      1
+(Y, Y, L, C)      1
+(C, A, A, C)      1
+(Y, C, C, C)      1
+(A, Y, L, C)      1
+(C, A, A, Y)      1
+(C, Y, C, A)      1
 ```
 
 ## API Description
@@ -111,6 +123,8 @@ Permutation
 class Die:
     """
     Represents a single die with customizable faces and weights.
+    
+    A die can be initialized with a set of faces, each having a default weight of 1.0. Users can modify the weights and roll the die to generate random outcomes based on these weights.
     """
     def __init__(self, faces: np.ndarray):
         """
@@ -123,18 +137,20 @@ class Die:
         TypeError: If `faces` is not a NumPy array.
         ValueError: If the values in `faces` are not unique.
         """
+
     def change_weight(self, face, new_weight):
         """
         Changes the weight of a specified face.
         
         Parameters:
-        face (int or str): The face value whose weight is to be changed.
-        new_weight (int or float): The new weight to be assigned to the face.
+        face: The face value whose weight is to be changed.
+        new_weight: The new weight to be assigned to the face.
         
         Raises:
         IndexError: If the face value is not found in the die faces.
         TypeError: If the new weight is not a non-negative number.
         """
+
     def roll(self, num_rolls=1):
         """
         Rolls the die one or more times.
@@ -145,6 +161,7 @@ class Die:
         Returns:
         list: A list of outcomes from the rolls.
         """
+
     def show(self):
         """
         Shows the current state of the die.
@@ -159,7 +176,7 @@ class Die:
 ```python
 class Game:
     """
-    Represents a game consisting of rolling one or more similar dice (Die objects) one or more times.
+    Represents a game consisting of rolling one or more dice (Die objects) one or more times.
     """
     def __init__(self, dice: list):
         """
@@ -171,6 +188,7 @@ class Game:
         Raises:
         TypeError: If the list does not contain Die objects.
         """
+
     def play(self, n_rolls: int):
         """
         Rolls all dice in the game for a specified number of times.
@@ -181,6 +199,7 @@ class Game:
         Saves:
         A private data frame with the results of the rolls in wide format.
         """
+
     def show(self, form='wide'):
         """
         Shows the results of the most recent play.
@@ -201,7 +220,7 @@ class Game:
 ```python
 class Analyzer:
     """
-    An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
+    An Analyzer object takes the results of a single game (Game object) and computes various descriptive statistical properties about it.
     """
     def __init__(self, game):
         """
@@ -213,6 +232,7 @@ class Analyzer:
         Raises:
         ValueError: If the input is not a Game object.
         """
+
     def jackpot(self):
         """
         Counts how many jackpots occurred in the game.
@@ -220,6 +240,7 @@ class Analyzer:
         Returns:
         int: The number of jackpots.
         """
+
     def face_counts_per_roll(self):
         """
         Computes the count of each face value per roll.
@@ -227,6 +248,7 @@ class Analyzer:
         Returns:
         pd.DataFrame: A DataFrame with roll numbers as rows, face values as columns, and counts as values.
         """
+
     def combo_count(self):
         """
         Computes the distinct combinations of faces rolled, along with their counts.
@@ -236,6 +258,7 @@ class Analyzer:
         Returns:
         pd.DataFrame: A DataFrame with a MultiIndex of distinct combinations and a column for the associated counts.
         """
+
     def permutation_count(self):
         """
         Computes the distinct permutations of faces rolled, along with their counts.
