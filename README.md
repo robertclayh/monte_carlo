@@ -13,7 +13,7 @@ This project simulates rolling dice, playing games with those dice, and analyzin
 
 ```python
 import numpy as np
-from die import Die
+from monte_carlo import Die
 
 faces = np.array([1, 2, 3, 4, 5, 6])
 die = Die(faces)
@@ -21,10 +21,14 @@ die.change_weight(1, 2.0)
 print(die.roll(10))
 ```
 
+```
+[5, 4, 1, 1, 5, 1, 6, 1, 5, 3]
+```
+
 ### Playing a Game
 
 ```python
-from game import Game
+from monte_carlo import Game
 
 dice = [Die(faces), Die(faces)]
 game = Game(dice)
@@ -35,7 +39,7 @@ print(game.show('wide'))
 ### Analyzing a Game
 
 ```python
-from analyzer import Analyzer
+from monte_carlo import Analyzer
 
 analyzer = Analyzer(game)
 print(analyzer.jackpot())

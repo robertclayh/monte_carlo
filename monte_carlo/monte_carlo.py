@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from itertools import combinations_with_replacement, permutations
 
 class Die:
     """
