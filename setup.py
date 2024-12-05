@@ -11,7 +11,7 @@ setup(
     author='Robert Clay Harris',
     author_email='jbm2rt@virginia.edu',
     description='A Monte Carlo Simulator',
-    url='https://github.com/yourusername/yourrepository',
+    url='https://github.com/robertclayh/monte_carlo',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',

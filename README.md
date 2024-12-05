@@ -21,7 +21,7 @@ die.change_weight(1, 2.0)
 print(die.roll(10))
 ```
 
-```
+```plaintxt
 [5, 4, 1, 1, 5, 1, 6, 1, 5, 3]
 ```
 
@@ -36,16 +36,71 @@ game.play(10)
 print(game.show('wide'))
 ```
 
+```plaintxt
+      0  1
+Roll      
+0     4  5
+1     5  2
+2     4  4
+3     4  3
+4     1  2
+5     6  2
+6     4  6
+7     1  1
+8     1  3
+9     2  3
+```
+
 ### Analyzing a Game
 
 ```python
 from monte_carlo import Analyzer
 
 analyzer = Analyzer(game)
-print(analyzer.jackpot())
+print(f"Jackpots rolled: {analyzer.jackpot()}")
 print(analyzer.face_counts_per_roll())
 print(analyzer.combo_count())
 print(analyzer.permutation_count())
+```
+
+```plaintxt
+Jackpots rolled: 2
+      1  2  3  4  5  6
+Roll                  
+0     0  0  0  1  1  0
+1     0  1  0  0  1  0
+2     0  0  0  2  0  0
+3     0  0  1  1  0  0
+4     1  1  0  0  0  0
+5     0  1  0  0  0  1
+6     0  0  0  1  0  1
+7     2  0  0  0  0  0
+8     1  0  1  0  0  0
+9     0  1  1  0  0  0
+             Count
+Combination       
+(4, 5)           1
+(2, 5)           1
+(4, 4)           1
+(3, 4)           1
+(1, 2)           1
+(2, 6)           1
+(4, 6)           1
+(1, 1)           1
+(1, 3)           1
+(2, 3)           1
+             Count
+Permutation       
+(4, 5)           1
+(5, 2)           1
+(4, 4)           1
+(4, 3)           1
+(1, 2)           1
+(6, 2)           1
+(4, 6)           1
+(1, 1)           1
+(1, 3)           1
+(2, 3)           1
 ```
 
 ## API Description
