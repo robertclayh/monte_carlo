@@ -124,7 +124,8 @@ class Die:
     """
     Represents a single die with customizable faces and weights.
     
-    A die can be initialized with a set of faces, each having a default weight of 1.0. Users can modify the weights and roll the die to generate random outcomes based on these weights.
+    A die can be initialized with a set of faces, each having a default weight of 1.0. 
+    Users can modify the weights and roll the die to generate random outcomes based on these weights.
     """
     def __init__(self, faces: np.ndarray):
         """
@@ -220,7 +221,8 @@ class Game:
 ```python
 class Analyzer:
     """
-    An Analyzer object takes the results of a single game (Game object) and computes various descriptive statistical properties about it.
+    An Analyzer object takes the results of a single game (Game object) and 
+    computes various descriptive statistical properties about it.
     """
     def __init__(self, game):
         """
