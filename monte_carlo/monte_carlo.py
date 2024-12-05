@@ -135,7 +135,8 @@ class Game:
         
 class Analyzer:
     """
-    An Analyzer object takes the results of a single game (Game object) and computes various descriptive statistical properties about it.
+    An Analyzer object takes the results of a single game (Game object) 
+    and computes various descriptive statistical properties about it.
     """
     def __init__(self, game):
         """

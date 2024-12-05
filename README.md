@@ -7,6 +7,14 @@
 ## Synopsis
 This project simulates rolling dice, playing games with those dice, and analyzing the results.
 
+## Installation
+
+```bash
+git clone https://github.com/robertclayh/monte_carlo.git
+cd monte_carlo
+pip install .
+```
+
 ## Usage
 
 ### Creating Dice
